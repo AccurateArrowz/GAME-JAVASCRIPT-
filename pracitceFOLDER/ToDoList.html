@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 40px;
+      }
+      .toDo {
+        background-color: pink;
+        width: 30%;
+        min-height: 250px;
+        position: relative;
+        padding: 20px;
+      }
+      .inputReceiver {
+        position: absolute;
+        left: 20px;
+        bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toDo">
+      <ul class="toDoUl">
+        <!-- <li>Maths</li>
+            <li>Programming</li>
+            <li>SoftwareDesign</li> -->
+      </ul>
+      <div class="inputReceiver">
+        <input type="submit" name="" id="addButton" value="+" />
+
+        <input type="text" name="" id="toDoTextInput" />
+      </div>
+    </div>
+    <script>
+      addButton = document.querySelector("#addButton");
+      input = document.querySelector("#toDoTextInput");
+      unorderedList = document.querySelector(".toDoUl");
+      localKey = "tasks.List";
+      lists = []; //why create an store multiple items
+      //lists is just an empty array created to set multiple items in local storage under a single key as used below in save()
+
+      id = 0;
+      function idGiver() {
+        id += 1;
+        return id;
+      }
+
+      function saveToLocal() {
+        localStorage.setItem(localKey, JSON.stringify(lists));//why stringify
+        //don't forget to stringify to store it like '[taskA, taskB,taskC]' and use parse to convert back to  array
+        console.log(lists);
+      }
+
+      addButton.addEventListener("click", () => {
+
+    
+        if (input.value == null || input.value == "") {
+          return;
+        }
+        render(input.value); 
+        input.value = null;
+
+       
+      });
+      function render(inner_text){
+        listItem = document.createElement("li");
+        listItem.classList.add("listItems");
+            // listItem.addId('a')
+            listItem.innerText = inner_text;
+            unorderedList.appendChild(listItem);
+        lists.push(listItem.innerText);
+        saveToLocal();
+       
+
+      }
+      function getFromLocal() {
+        //this function should be run when page is refreshed but not done anything for that
+        let ListItemsFromLocal = JSON.parse(localStorage.getItem(localKey));//what does parse do?
+      ListItemsFromLocal.forEach((item)=>{render(item)})
+      }
+    </script>
+  </body>
+</html>
